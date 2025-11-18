@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <title>Croatian Telecom bot</title>
+    <link rel="shortcut icon" href="favicon.ico"
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0 user-scalable=no"/>
+
+    <!--Replace the image below with your own-->
+    <style>
+        body {
+            background-image: url('images/telecom.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
+    </style>
+</head>
+<body>
+    
+<!-- Teneo Web Chat Widget -->
+<div id="teneo-web-widget" style="position: absolute; height: 100%; width: 100%; top: 0; z-index: 999; pointer-events: none;"></div>
+    <script type="module" crossorigin="anonymous" src="script/teneowebwidget-v2.0.0.js"></script>
+    <link rel="stylesheet" crossorigin="anonymous" href="style/teneowebwidget-v2.0.2.css">
+    <!--link rel="stylesheet" crossorigin="true" href="/path/to/custom-css-file.css"-->
+    <script>
+
+     // Function to reset chat
+    function resetChat() {
+        if (window.TeneoWebWidget && typeof window.TeneoWebWidget.resetTWW === 'function') {
+            window.TeneoWebWidget.resetTWW();
+            console.log('Teneo chat has been reset.');
+        } else {
+            console.warn('Teneo Web Widget not ready yet.');
+        }
+    }
+       
+                
+        // Wait for Teneo script to load and window to be ready
+        window.addEventListener('load', function() {
+        const initWidget = () => {
+            if (window.TeneoWebWidget && typeof window.TeneoWebWidget.initialize === 'function') {
+                window.TeneoWebWidget.initialize({
+                    element: document.getElementById('teneo-web-widget'),
+                    settings: {
+                        title: "Talk to Karla",
+                        engineUrl: "https://io136gb10br46vbsu2c19g2vlcfr6u8c.as-solutions.teneo.solutions/ps-crtel-en-qa-1/",
+                        botImage: "src/assets/supportAgent.png",
+                        botName: "Karla",
+                        userImage: "src/assets/user.png",
+                        sendEmptyInput: "ON_OPEN_WIDGET",
+                        asrActive: false,
+                        ttsActive: false,
+                        sseEnabled: true,
+                        partialResponseInterval: 20,
+                        captureChat : false,
+                        azureSpeechApiKey : "AqE8E2qFxS4YMTgDV9N6xOZ8hHAxGnBM4xet6PR65xAOqTMYhh9jJQQJ99BHACYeBjFXJ3w3AAAYACOGyXlA"}
+               });
+
+                // Call reset after short delay to ensure initialization completes
+                setTimeout(resetChat, 500);
+            } else {
+                console.warn('Teneo Web Widget not ready — retrying...');
+                setTimeout(initWidget, 200);
+            }
+        };
+
+        initWidget();
+    });
+
+    // Reset chat just before reload/leave [optional]
+    // window.addEventListener('beforeunload', resetChat);
+        
+    </script>
+<!-- Teneo Web Widget end -->    
+
+</body>
